@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booklio — Книжковий Супермаркет Преміум</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header id="main-header">
+        <a href="#" id="nav-logo" class="logo-wrapper-link">
+            <img src="logo.png" alt="Booklio Logo" class="logo-image">
+        </a>
+
+        <div class="header-center">
+            <div class="navigation-tabs">
+                <div class="catalog-wrapper">
+                    <button class="catalog-btn" id="catalog-toggle-btn">Каталог книг ▾</button>
+                    <div class="catalog-dropdown" id="catalog-menu">
+                        <a href="#" class="category-item" data-category="all">Всі книги</a>
+                        <a href="#" class="category-item" data-category="management-picks" style="color: #ff9900; font-weight: bold;">📋 Поради керівництва</a>
+                        <a href="#" class="category-item" data-category="fantasy">Фентезі та Світ Магії</a>
+                        <a href="#" class="category-item" data-category="tiktok-trends">Тренди TikTok & Young Adult</a>
+                        <a href="#" class="category-item" data-category="detective">Детективи та Трилери</a>
+                        <a href="#" class="category-item" data-category="comics">Комікси, Манґа & Новели</a>
+                        <a href="#" class="category-item" data-category="self-dev">Психологія та Саморозвиток</a>
+                        <a href="#" class="category-item" data-category="bundles">Вигідні комплекти книг</a>
+                    </div>
+                </div>
+                <button class="brand-merch-btn" id="brand-merch-tab-btn">✨ НАШ МЕРЧ</button>
+            </div>
+            
+            <div class="search-form">
+                <input type="text" id="search-input" class="search-input" placeholder="Шукайте улюблені книги та авторів...">
+                <button type="button" id="search-clear-btn" class="clear-btn">✕</button>
+                <button type="button" id="search-submit-btn" class="search-btn">Пошук</button>
+            </div>
+        </div>
+
+        <div class="header-right">
+            <div class="cart-wrapper">
+                <a class="cart-link" href="#" id="cart-toggle">
+                    <span class="cart-icon">🛒</span>
+                    <span id="cart-count">0</span>
+                </a>
+               
+                <div class="cart-dropdown" id="cart-dropdown">
+                    <div id="cart-items-container"></div>
+                   
+                    <div class="promo-zone" id="cart-promo-box" style="display: none;">
+                        <input type="text" id="promo-input" placeholder="Промокод (BOOKLIO20)">
+                        <button id="apply-promo-btn">Застосувати</button>
+                    </div>
+                    <div id="promo-message" class="promo-msg"></div>
+
+                    <div class="cart-total-box" id="cart-total-box" style="display: none;">
+                        <span>Всього:</span>
+                        <div><span id="cart-total-amount">0</span> грн</div>
+                    </div>
+                    <div class="cart-footer" id="cart-footer" style="display: none;">
+                        <button class="checkout-btn" id="checkout-btn">Оформити замовлення →</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="account-zone">
+                <a class="login-btn" href="login.html">Увійти</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="content" id="store-page">
+        <section class="banner">
+            <div class="banner-overlay-design"></div>
+            <div class="banner-text-content">
+                <h1>Booklio — ваша історія починається тут.</h1>
+                <p>Відкрийте світ, де кожна сторінка — це нова дивовижна пригода! Світові бестселери, шедеври класики, топові підліткові тренди TikTok та фірмовий мерч.</p>
+            </div>
+        </section>
+        <div id="search-status-message" class="status-message" style="display: none;"></div>
+        <div id="main-books-sections"></div>
+    </main>
+
+    <main class="content" id="checkout-page" style="display: none;">
+        <div class="checkout-container">
+            <div class="checkout-form-side">
+                <h2>📦 Оформлення доставки</h2>
+                <form id="order-delivery-form" onsubmit="return false;">
+                    <label class="field-label">Ваше повне ім'я (ПІБ):</label>
+                    <input type="text" id="order-name" class="checkout-field" placeholder="Прізвище, Ім'я, По батькові" required>
+
+                    <label class="field-label">Контактний телефон:</label>
+                    <input type="tel" id="order-phone" class="checkout-field" placeholder="+380" required>
+
+                    <label class="field-label">Місто доставки:</label>
+                    <input type="text" id="order-city" class="checkout-field" placeholder="Наприклад: Київ" required>
+
+                    <label class="field-label">Відділення Нової Пошти:</label>
+                    <input type="text" id="order-warehouse" class="checkout-field" placeholder="Наприклад: Відділення №15" required>
+
+                    <label class="field-label">Спосіб оплати:</label>
+                    <select id="order-payment" class="checkout-field select-field">
+                        <option value="card">💳 Оплата карткою онлайн</option>
+                        <option value="cash">🚚 Післяплата (При отриманні)</option>
+                    </select>
+
+                    <button type="button" class="submit-order-final-btn" id="submit-order-final-btn">✅ ПІДТВЕРДИТИ ТА ОПЛАТИТИ</button>
+                    <button type="button" class="back-to-shop-link-btn" id="cancel-order-btn">Повернутися до покупок</button>
+                </form>
+            </div>
+
+            <div class="checkout-summary-side">
+                <h3>Ваше замовлення</h3>
+                <div id="checkout-summary-items"></div>
+                <div class="summary-total-line">
+                    <span>До сплати:</span>
+                    <strong id="summary-total-price">0 грн</strong>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <main class="content" id="profile-page" style="display: none;">
+        <div class="profile-container">
+            <div class="profile-sidebar">
+                <div class="profile-avatar-view">
+                    <img id="current-avatar-img" src="https://api.dicebear.com/7.x/bottts/svg?seed=booklio1" alt="Avatar">
+                </div>
+                <h2 id="profile-display-name">Гість</h2>
+                <p id="profile-display-email">customer@booklio.ua</p>
+                <button class="logout-btn-large" id="profile-logout-btn">🔴 ВИЙТИ З АКАУНТУ</button>
+                <button class="back-to-shop-btn" id="profile-back-btn">⬅ НАЗАД ДО КНИГ</button>
+            </div>
+
+            <div class="profile-main-content">
+                <h3>Налаштування профілю</h3>
+                <div class="profile-card">
+                    <label class="field-label">Ваше ім'я в системі</label>
+                    <div class="modern-input-group">
+                        <input type="text" id="change-name-input" class="profile-input" placeholder="Як вас звати?">
+                        <button class="save-profile-btn" id="save-name-btn">Оновити</button>
+                    </div>
+
+                    <label class="field-label" style="margin-top: 20px;">Оберіть круту аватарку (8 варіантів):</label>
+                    <div class="avatar-options">
+                        <div class="avatar-option" data-avatar="https://api.dicebear.com/7.x/bottts/svg?seed=booklio1"><img src="https://api.dicebear.com/7.x/bottts/svg?seed=booklio1"></div>
+                        <div class="avatar-option" data-avatar="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix"><img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix"></div>
+                        <div class="avatar-option" data-avatar="https://api.dicebear.com/7.x/avataaars/svg?seed=Aneka"><img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Aneka"></div>
+                        <div class="avatar-option" data-avatar="https://api.dicebear.com/7.x/pixel-art/svg?seed=book"><img src="https://api.dicebear.com/7.x/pixel-art/svg?seed=book"></div>
+                        <div class="avatar-option" data-avatar="https://api.dicebear.com/7.x/adventurer/svg?seed=Leo"><img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Leo"></div>
+                        <div class="avatar-option" data-avatar="https://api.dicebear.com/7.x/adventurer/svg?seed=Tiger"><img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Tiger"></div>
+                        <div class="avatar-option" data-avatar="https://api.dicebear.com/7.x/bottts/svg?seed=matrix"><img src="https://api.dicebear.com/7.x/bottts/svg?seed=matrix"></div>
+                        <div class="avatar-option" data-avatar="https://api.dicebear.com/7.x/pixel-art/svg?seed=game"><img src="https://api.dicebear.com/7.x/pixel-art/svg?seed=game"></div>
+                    </div>
+                </div>
+
+                <h3>Історія ваших покупок</h3>
+                <div class="profile-card">
+                    <div id="order-history-container">
+                        <p style="color: #777;">Історія замовлень пуста.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="main-footer">
+        <div class="footer-container">
+            <div class="footer-block-wide">
+                <h3>Про Booklio</h3>
+                <p>Ми збираємо найкращі паперові видання, відстежуємо світові тренди та створюємо атмосферні речі, щоб кожне ваше читання перетворювалось на особливий ритуал.</p>
+            </div>
+            <div class="footer-block-contacts">
+                <h3>Локація та контакти</h3>
+                <p>📍 м. Київ, вул. Хрещатик, 12 (Центральний хаб)</p>
+                <p>📞 Гаряча лінія: <strong>(093) 123-45-67</strong></p>
+                <p>✉️ Електронна пошта: info@booklio.com.ua</p>
+            </div>
+        </div>
+        <div class="footer-bottom">&copy; 2026 Booklio. Всі права захищені. Надійна доставка по всій Україні!</div>
+    </footer>
+
+    <div class="modal-overlay" id="book-modal">
+        <div class="modal-content">
+            <button class="modal-close" id="modal-close-btn">✕</button>
+            <div class="modal-body">
+                <div class="modal-image-side" id="modal-img-container"></div>
+                <div class="modal-info-side">
+                    <span class="modal-tag" id="modal-book-tag"></span>
+                    <h2 id="modal-book-title">Назва</h2>
+                    <p class="modal-author" id="modal-book-author">Автор</p>
+                    <div class="rating-stars">⭐⭐⭐⭐⭐ <span style="color:#28a745; font-size:13px; font-weight:bold;">● В наявності</span></div>
+                    <div class="specs-table">
+                        <div class="specs-row"><span>Видавництво:</span><strong id="spec-publisher">-</strong></div>
+                        <div class="specs-row"><span>Сторінок / Об'єм:</span><strong id="spec-pages">-</strong></div>
+                        <div class="specs-row"><span>Палітурка / Тип:</span><strong id="spec-cover">-</strong></div>
+                        <div class="specs-row"><span>Мова видання:</span><strong>Українська</strong></div>
+                    </div>
+                    <p class="modal-description" id="modal-book-description">Опис...</p>
+                    <div class="modal-action-row">
+                        <div class="modal-price-zone"><span>Ціна:</span> <span class="modal-price" id="modal-book-price">0 грн</span></div>
+                        <button class="modal-buy-btn" id="modal-buy-btn">Додати в кошик</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

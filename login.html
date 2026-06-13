@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+
+<html lang="uk">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>Авторизація — Booklio</title>
+
+    <style>
+
+        body { margin: 0; font-family: 'Segoe UI', sans-serif; background: linear-gradient(135deg, #f5f7ff, #e8ecff); display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+
+        .login-card { background: white; padding: 40px; border-radius: 24px; box-shadow: 0 10px 30px rgba(123, 138, 224, 0.15); width: 100%; max-width: 380px; text-align: center; }
+
+        .brand-title { font-size: 32px; font-weight: bold; color: #7B8AE0; margin-bottom: 25px; }
+
+        .form-group { text-align: left; margin-bottom: 18px; }
+
+        .form-group label { display: block; margin-bottom: 6px; color: #666; font-size: 13px; font-weight: bold; }
+
+        .form-group input { width: 100%; padding: 12px; border: 2px solid #E8ECFF; border-radius: 10px; font-size: 15px; outline: none; box-sizing: border-box; }
+
+        .form-group input:focus { border-color: #7B8AE0; }
+
+        .submit-btn { width: 100%; background-color: #7B8AE0; color: white; border: none; padding: 14px; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+
+        .submit-btn:hover { background-color: #6574d4; }
+
+        .toggle-text { margin-top: 20px; font-size: 14px; color: #666; }
+
+        .toggle-text a { color: #7B8AE0; font-weight: bold; text-decoration: none; cursor: pointer; }
+
+        .error-msg { color: #ff4d4d; font-size: 13px; margin-top: 10px; display: none; }
+
+    </style>
+
+</head>
+
+<body>
+
+
+
+    <div class="login-card">
+
+        <div class="brand-title">Booklio</div>
+
+       
+
+        <h2 id="form-title">Вхід в акаунт</h2>
+
+        <form id="auth-form">
+
+            <div class="form-group" id="username-group" style="display: none;">
+
+                <label>Ваше ім'я (для профілю)</label>
+
+                <input type="text" id="auth-username" placeholder="Як до вас звертатися?">
+
+            </div>
+
+            <div class="form-group">
+
+                <label>Електронна пошта</label>
+
+                <input type="email" id="auth-email" required placeholder="example@mail.com">
+
+            </div>
+
+            <div class="form-group">
+
+                <label>Пароль</label>
+
+                <input type="password" id="auth-password" required placeholder="••••••••">
+
+            </div>
+
+           
+
+            <button type="submit" class="submit-btn" id="submit-form-btn">Увійти</button>
+
+            <div id="error-box" class="error-msg"></div>
+
+        </form>
+
+
+
+        <div class="toggle-text" id="toggle-zone">
+
+            Немає акаунту? <a id="switch-to-reg">Зареєструватися</a>
+
+        </div>
+
+    </div>
+
+
+
+    <script>
+
+        let isSignUpMode = false; // Початковий стан — Вхід
+
+       
+
+        const formTitle = document.getElementById('form-title');
+
+        const usernameGroup = document.getElementById('username-group');
+
+        const submitBtn = document.getElementById('submit-form-btn');
+
+        const toggleZone = document.getElementById('toggle-zone');
+
+        const errorBox = document.getElementById('error-box');
+
+       
+
+        // ПЕРЕМИКАННЯ РЕЖИМІВ (Вхід / Реєстрація)
+
+        function toggleMode(toSignUp) {
+
+            isSignUpMode = toSignUp;
+
+            errorBox.style.display = 'none';
+
+            if (isSignUpMode) {
+
+                formTitle.textContent = "Реєстрація";
+
+                usernameGroup.style.display = "block";
+
+                document.getElementById('auth-username').required = true;
+
+                submitBtn.textContent = "Створити акаунт";
+
+                toggleZone.innerHTML = `Вже є акаунт? <a id="switch-to-login">Увійти</a>`;
+
+                document.getElementById('switch-to-login').onclick = () => toggleMode(false);
+
+            } else {
+
+                formTitle.textContent = "Вхід в акаунт";
+
+                usernameGroup.style.display = "none";
+
+                document.getElementById('auth-username').required = false;
+
+                submitBtn.textContent = "Увійти";
+
+                toggleZone.innerHTML = `Немає акаунту? <a id="switch-to-reg">Зареєструватися</a>`;
+
+                document.getElementById('switch-to-reg').onclick = () => toggleMode(true);
+
+            }
+
+        }
+
+
+
+        document.getElementById('switch-to-reg').onclick = () => toggleMode(true);
+
+
+
+        // ОБРОБКА ДАНИХ
+
+        document.getElementById('auth-form').onsubmit = function(e) {
+
+            e.preventDefault();
+
+            errorBox.style.display = 'none';
+
+           
+
+            const email = document.getElementById('auth-email').value.trim();
+
+            const password = document.getElementById('auth-password').value;
+
+           
+
+            if (isSignUpMode) {
+
+                // РЕЖИМ РЕЄСТРАЦІЇ
+
+                const name = document.getElementById('auth-username').value.trim();
+
+               
+
+                // Зберігаємо дані користувача в локальну пам'ять браузера
+
+                localStorage.setItem('reg_email', email);
+
+                localStorage.setItem('reg_password', password);
+
+                localStorage.setItem('reg_name', name);
+
+               
+
+                alert("Реєстрація успішна! Тепер ви можете увійти.");
+
+                toggleMode(false); // перемикаємо на вхід
+
+            } else {
+
+                // РЕЖИМ ВХОДУ
+
+                const savedEmail = localStorage.getItem('reg_email');
+
+                const savedPassword = localStorage.getItem('reg_password');
+
+                const savedName = localStorage.getItem('reg_name');
+
+               
+
+                if (!savedEmail) {
+
+                    errorBox.textContent = "Цей акаунт не знайдено. Спочатку зареєструйтеся!";
+
+                    errorBox.style.display = 'block';
+
+                    return;
+
+                }
+
+               
+
+                if (email === savedEmail && password === savedPassword) {
+
+                    // Зберігаємо активну сесію та перенаправляємо на головну
+
+                    localStorage.setItem('username', savedName);
+
+                    window.location.href = "index.html";
+
+                } else {
+
+                    errorBox.textContent = "Невірний логін або пароль!";
+
+                    errorBox.style.display = 'block';
+
+                }
+
+            }
+
+        };
+
+    </script>
+
+</body>
+
+</html> 
+
